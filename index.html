@@ -577,6 +577,69 @@ th{
   }
 }
 
+
+/* ============================================================
+   NAVIGAZIONE — barra in basso sul telefono, come nell'Agenda.
+   Questo blocco sta in fondo al foglio di proposito: qualunque regola
+   scritta dopo, a parità di peso, lo scavalcherebbe in silenzio.
+   ============================================================ */
+
+/* Icone e tasto centrale esistono solo sul telefono. Vanno spenti qui, nella
+   regola base: se il loro stile vivesse solo dentro il blocco @media, sul
+   computer comparirebbero grezzi, con le icone a dimensione naturale. */
+.nav-ico{display:none}
+.fab-add{display:none}
+
+@media(max-width:760px){
+  /* Sotto il pollice invece che in cima allo schermo: prima erano quattro
+     cartelloni bianchi impilati che si mangiavano tutta la prima schermata. */
+  .nav{
+    position:fixed; inset:auto 0 0 0; top:auto;
+    z-index:60;
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0; margin:0;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.94);
+    backdrop-filter:blur(16px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -6px 24px rgba(15,23,42,.07);
+    border-radius:0;
+  }
+  .nav-btn{
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:4px;
+    min-height:56px; padding:6px 2px;
+    background:none; border:0; box-shadow:none; border-radius:12px;
+    color:var(--muted); font-weight:750;
+  }
+  .nav-btn.active{background:none; color:var(--blue)}
+  .nav-btn:active{background:var(--surface-soft)}
+  .nav-ico{
+    display:block; width:22px; height:22px;
+    fill:none; stroke:currentColor; stroke-width:2;
+    stroke-linecap:round; stroke-linejoin:round;
+  }
+  .nav-btn.active .nav-ico{stroke-width:2.4}
+  .nav-lab{font-size:10.5px; line-height:1; letter-spacing:-.01em}
+
+  /* Rialzato sulla barra: è l'azione che farai cento volte più delle altre. */
+  .fab-add{
+    display:flex; align-items:center; justify-content:center;
+    align-self:center; justify-self:center;
+    width:54px; height:54px; margin-top:-22px;
+    border:0; border-radius:18px;
+    background:linear-gradient(135deg,#22c55e,#16a34a);
+    box-shadow:0 8px 22px rgba(22,163,74,.42);
+    cursor:pointer; transition:transform .12s ease;
+  }
+  .fab-add svg{width:26px; height:26px; fill:none; stroke:#fff; stroke-width:2.6; stroke-linecap:round}
+  .fab-add:active{transform:scale(.94)}
+
+  /* Spazio in fondo: il contenuto non deve finire sotto la barra. */
+  .container{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
+}
+
 </style>
 </head>
 <body>
@@ -630,10 +693,11 @@ th{
 </div>
 </section>
 <nav class="nav">
-<button class="nav-btn active" data-page="overview">Riepilogo</button>
-<button class="nav-btn" data-page="budget">Budget &amp; Spese</button>
-<button class="nav-btn" data-page="wealth">Patrimonio &amp; Obiettivi</button>
-<button class="nav-btn" data-page="flows">Movimenti</button>
+<button class="nav-btn active" data-page="overview"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.6"/><rect x="14" y="3" width="7" height="5" rx="1.6"/><rect x="14" y="12" width="7" height="9" rx="1.6"/><rect x="3" y="16" width="7" height="5" rx="1.6"/></svg><span class="nav-lab">Riepilogo</span></button>
+<button class="nav-btn" data-page="budget"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.5A2.5 2.5 0 0 1 5.5 5H19a1 1 0 0 1 1 1v2"/><path d="M3 7.5V18a2 2 0 0 0 2 2h14a1 1 0 0 0 1-1v-3"/><path d="M20 10.5h-3.5a2.5 2.5 0 0 0 0 5H20z"/></svg><span class="nav-lab">Budget</span></button>
+<button class="fab-add" id="fabAdd" type="button" aria-label="Registra una spesa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></button>
+<button class="nav-btn" data-page="wealth"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg><span class="nav-lab">Patrimonio</span></button>
+<button class="nav-btn" data-page="flows"><svg class="nav-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></svg><span class="nav-lab">Movimenti</span></button>
 </nav>
 <section class="page active" id="page-overview">
 <div class="summary-grid">
@@ -734,7 +798,7 @@ th{
 <div class="section-title"><h2>Spese registrate</h2></div>
 <div class="expense-form">
 <div class="field"><label>Spesa</label><input id="expenseDescription" placeholder="Es. Pizza"/></div>
-<div class="field"><label>XX €</label><input id="expenseAmount" step="0.01" type="number"/></div>
+<div class="field"><label>Importo</label><input id="expenseAmount" step="0.01" type="number"/></div>
 <div class="field"><label>Categoria</label><select id="expenseCategory"></select></div>
 <div class="field"><label>Sottocategoria</label><select id="expenseSubcategory"></select></div>
 <div class="field"><label>Note</label><input id="expenseNote"/></div>
@@ -1485,8 +1549,19 @@ const TOOLTIP={
   backgroundColor:'#0f172a', padding:10, cornerRadius:8,
   titleFont:{family:FONT,weight:'600'}, bodyFont:{family:FONT},
   callbacks:{ label:(ctx)=>{
-    const raw = ctx.parsed.y!=null ? ctx.parsed.y : (ctx.parsed.x!=null ? ctx.parsed.x : ctx.parsed);
-    return ` ${ctx.dataset.label ? ctx.dataset.label+': ' : ''}${euro(raw)}`;
+    /* Dove sta l'importo dipende da come è girato il grafico.
+       Barre verticali: {x:indice di categoria, y:importo}  → serve la y
+       Barre orizzontali (indexAxis:'y'): {x:importo, y:indice} → serve la x
+       Torta: parsed è già un numero.
+       Il codice di prima guardava sempre la y per prima: sulle barre
+       orizzontali trovava l'indice di riga e te lo mostrava in euro
+       (prima categoria → 0,00 €, seconda → 1,00 €). */
+    const p = ctx.parsed;
+    let v;
+    if (p === null || typeof p !== 'object') v = p;                    // torta e ciambella
+    else if (ctx.chart?.options?.indexAxis === 'y') v = p.x;           // barre orizzontali
+    else v = p.y;                                                      // tutto il resto
+    return ` ${ctx.dataset.label ? ctx.dataset.label+': ' : ''}${euro(v)}`;
   }}
 };
 function legend(pos){ return {position:pos||'bottom',labels:{font:{family:FONT,size:11},color:C.text,usePointStyle:true,pointStyleWidth:10,boxHeight:8,padding:14}}; }
@@ -1867,6 +1942,16 @@ function setPage(p){
 
 function bind(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>setPage(b.dataset.page===undefined?'overview':b.dataset.page)));
+  // Tasto verde centrale (solo telefono): porta al modulo spesa e ci mette il
+  // cursore dentro. Non apre nulla di nuovo: usa il modulo che c'è già.
+  const fab=q('fabAdd');
+  if(fab) fab.addEventListener('click',()=>{
+    setPage('budget');
+    const campo=q('expenseDescription');
+    if(!campo) return;
+    campo.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>campo.focus({preventScroll:true}),320);
+  });
   q('btnSave').addEventListener('click',async()=>{
     save();
     const ok=await saveToCloud();
