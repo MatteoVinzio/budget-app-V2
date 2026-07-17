@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 
-<!-- saved from url=(0044)https://matteovinzio.github.io/budget-app-2/ -->
 <html lang="it"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Budget Finanza</title>
-<link rel="icon" type="image/png" href="icon.png">
-<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="./icon.png"/>
+<link rel="apple-touch-icon" href="./icon.png"/>
+<meta name="theme-color" content="#2563eb"/>
+<meta name="apple-mobile-web-app-title" content="Budget"/>
 <style>
 :root{
   --bg:#eef4fb;
@@ -642,10 +642,27 @@ th{
   .container{padding-bottom:calc(86px + env(safe-area-inset-bottom))}
 }
 
+
+/* ============================================================
+   LARGHEZZA — perché la pagina non sfondi lo schermo del telefono.
+   Un elemento dentro una griglia non scende sotto la larghezza minima del
+   proprio contenuto se non glielo si dice. Nelle pagine Budget e Movimenti
+   il contenuto è una tabella con min-width:720px: la colonna restava larga
+   720px, la pagina diventava larga il doppio dello schermo e il telefono
+   rimpiccioliva tutto per farcela stare — barra in basso compresa, perché
+   è fissata al riquadro dello schermo e ne segue la scala.
+   Con min-width:0 la scheda può stringersi e lo scorrimento della tabella,
+   che era già previsto in .table-wrap, torna a fare il suo mestiere.
+   ============================================================ */
+.grid-2>*, .charts>*, .summary-grid>*, .kpis>*, .hero-top>*,
+.toolbar>*, .expense-form>*, .tracker-grid>*, .goal-grid>*, .withdraw-grid>*{
+  min-width:0;
+}
+.table-wrap{min-width:0}
+
 </style>
 </head>
 <body>
-&lt;!-- Dati finanziari dinamici: caricati solo dopo autenticazione --&gt;
 <div class="auth-overlay" id="authOverlay" hidden>
 <form autocomplete="on" class="auth-card" id="authForm">
 <h2>Accedi al tuo budget</h2>
